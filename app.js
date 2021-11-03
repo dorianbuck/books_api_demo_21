@@ -4,6 +4,16 @@ const cors = require("cors");
 const booksController = require("./booksController");
 const app = express();
 
+const cookieParser = require('cookie-parser');
+const cookieConfig = {
+  maxAge: 1000 * 60 * 15, // would expire after 15 minutes
+  httpOnly: true, // The cookie only accessible by the web server
+  signed: true // Indicates if the cookie should be signed
+};
+app.use(cookieParser('books_api_secret_12345'));
+
+
+
 app
   .use(express.json())
   .use(express.urlencoded({ extended: true }))

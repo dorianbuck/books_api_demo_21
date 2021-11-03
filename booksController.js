@@ -1,11 +1,18 @@
 const pool = require("./config");
+// const cookieParser = require('cookie-parser');
+// const cookieConfig = {
+//   maxAge: 1000 * 60 * 15, // would expire after 15 minutes
+//   httpOnly: true, // The cookie only accessible by the web server
+//   signed: true // Indicates if the cookie should be signed
+// };
+// cookieConfig.use(cookieParser('books_api_secret_12345'));
 
 const booksController = {
   async index(request, response) {
-    const { rows } = await pool.query(
+    const { rows, cookieConfig } = await pool.query(
       "SELECT books.id, books.title, authors.name FROM books INNER JOIN authors ON authors.id = books.author_id;"
     );
-    response.status(200).json({ books: rows });
+    response.status(200).json({ books: rows }).cookie("uid", "1", cookieConfig);
   },
 
   async create(request, response) {
